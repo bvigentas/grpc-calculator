@@ -1,9 +1,6 @@
 package com.github.bvigentas.calculator.server;
 
-import com.proto.calculator.Calculate;
-import com.proto.calculator.CalculateRequest;
-import com.proto.calculator.CalculateResponse;
-import com.proto.calculator.CalculateServiceGrpc;
+import com.proto.calculator.*;
 import io.grpc.stub.StreamObserver;
 
 public class CalculatorServiceImpl extends CalculateServiceGrpc.CalculateServiceImplBase {
@@ -41,5 +38,25 @@ public class CalculatorServiceImpl extends CalculateServiceGrpc.CalculateService
 
         responseObserver.onCompleted();
 
+    }
+
+    @Override
+    public void decomposePrimeNumber(DecomposeRequest request, StreamObserver<DecomposeResponse> responseObserver) {
+        int number = request.getNumber();
+
+        int k = 2;
+
+        while (number > 1) {
+            if (number % k == 0) {
+                DecomposeResponse response = DecomposeResponse.newBuilder().setResult(k).build();
+                responseObserver.onNext(response);
+
+                number = number / k;
+            } else {
+                k++;
+            }
+        }
+
+        responseObserver.onCompleted();
     }
 }

@@ -25,7 +25,17 @@ message CalculateResponse {
     string result = 1;
 }
 
+message DecomposeRequest {
+    int32 number = 1;
+}
+
+message DecomposeResponse {
+    int32 result = 1;
+}
+
 service CalculateService {
 
     rpc Execute(CalculateRequest) returns (CalculateResponse){};
+
+    rpc DecomposePrimeNumber(DecomposeRequest) returns (stream DecomposeResponse) {};
 }
