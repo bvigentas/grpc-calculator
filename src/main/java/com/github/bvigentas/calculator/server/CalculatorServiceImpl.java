@@ -1,6 +1,7 @@
 package com.github.bvigentas.calculator.server;
 
 import com.proto.calculator.*;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
 public class CalculatorServiceImpl extends CalculateServiceGrpc.CalculateServiceImplBase {
@@ -119,5 +120,25 @@ public class CalculatorServiceImpl extends CalculateServiceGrpc.CalculateService
         };
 
         return requestObserver;
+    }
+
+    @Override
+    public void squareRoot(SquareRootRequest request, StreamObserver<SquareRootResponse> responseObserver) {
+        int number = request.getNumber();
+
+        if (number > 0) {
+            double result = Math.sqrt(number);
+            responseObserver.onNext(SquareRootResponse.newBuilder()
+                    .setResult(result)
+                    .build());
+
+            responseObserver.onCompleted();
+        } else {
+            responseObserver.onError(
+                    Status.INVALID_ARGUMENT
+                            .withDescription("The number sent is negative")
+                            .asRuntimeException()
+            );
+        }
     }
 }

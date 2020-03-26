@@ -49,6 +49,14 @@ message MaximumResponse {
     int32 number = 1;
 }
 
+message SquareRootRequest {
+    int32 number = 1;
+}
+
+message SquareRootResponse {
+    double result = 1;
+}
+
 service CalculateService {
 
     rpc Execute(CalculateRequest) returns (CalculateResponse){};
@@ -58,4 +66,9 @@ service CalculateService {
     rpc Average(stream AverageRequest) returns (AverageResponse) {};
 
     rpc Maximum(stream MaximumRequest) returns (stream MaximumResponse) {};
+
+    //Error Handling -> Throw excption if number is negative
+    rpc SquareRoot(SquareRootRequest) returns (SquareRootResponse) {};
+
+
 }
